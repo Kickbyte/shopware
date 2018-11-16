@@ -1193,9 +1193,9 @@ class Order extends ModelEntity
             }
 
             if ($this->net) {
-                $invoiceAmountNet += round(($price * $detail->getQuantity()) / 100 * (100 + $taxValue), 2);
+                $invoiceAmountNet += ($price * $detail->getQuantity()) / 100 * (100 + $taxValue);
             } else {
-                $invoiceAmountNet += round(($price * $detail->getQuantity()) / (100 + $taxValue) * 100, 2);
+                $invoiceAmountNet += ($price * $detail->getQuantity()) / (100 + $taxValue) * 100;
             }
         }
 
@@ -1204,10 +1204,10 @@ class Order extends ModelEntity
             $this->invoiceAmount = $this->invoiceAmountNet;
         } elseif ($this->net) {
             $this->invoiceAmountNet = $invoiceAmount + $this->invoiceShippingNet;
-            $this->invoiceAmount = $invoiceAmountNet + $this->invoiceShipping;
+            $this->invoiceAmount = round($invoiceAmountNet + $this->invoiceShipping, 2);
         } else {
             $this->invoiceAmount = $invoiceAmount + $this->invoiceShipping;
-            $this->invoiceAmountNet = $invoiceAmountNet + $this->invoiceShippingNet;
+            $this->invoiceAmountNet = round($invoiceAmountNet + $this->invoiceShippingNet, 2);
         }
     }
 
